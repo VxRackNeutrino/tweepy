@@ -310,14 +310,17 @@ class Stream(object):
         while self.running and not resp.raw.closed:
             length = 0
             while not resp.raw.closed:
-                line = buf.read_line().strip()
-                if not line:
-                    self.listener.keep_alive()  # keep-alive new lines are expected
-                elif line.isdigit():
-                    length = int(line)
-                    break
-                else:
-                    raise TweepError('Expecting length, unexpected value found')
+                try:
+                    line = buf.read_line().strip()
+                    if not line:
+                        self.listener.keep_alive()  # keep-alive new lines are expected
+                    elif line.isdigit():
+                        length = int(line)
+                        break
+                    else:
+                        raise TweepError('Expecting length, unexpected value found')
+                except AttributeError as e:
+                    pass
 
             next_status_obj = buf.read_len(length)
             if self.running:
