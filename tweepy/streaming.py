@@ -277,9 +277,11 @@ class Stream(object):
                 self.snooze_time = min(self.snooze_time + self.snooze_time_step,
                                        self.snooze_time_cap)
             except Exception as exc:
-                exception = exc
+                #exception = exc
+                print(exc)
                 # any other exception is fatal, so kill loop
-                break
+                #break
+                pass
 
         # cleanup
         self.running = False
